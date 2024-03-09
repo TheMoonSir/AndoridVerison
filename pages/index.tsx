@@ -1,8 +1,7 @@
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { InputText } from "./Components/InputText";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const index = () => {
   const router = useRouter();

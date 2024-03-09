@@ -5,8 +5,10 @@ import { RiPlayFill, RiDeleteBinLine, RiSaveFill } from "react-icons/ri";
 import { AiFillFileAdd } from "react-icons/ai";
 import axios from "axios";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function MonacoComponent() {
+  const router = useRouter();
   const [Script, setText] = useState("-- some comment");
   const editorRef = useRef(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -65,7 +67,11 @@ function MonacoComponent() {
         console.log("Executed!");
       })
       .catch((error) => {
-        console.error("Error:", error);
+        if (error.response && error.response.data.error === "Unauthorized") {
+          router.push("/");
+        } else {
+          console.error("Error:", error.data);
+        }
       });
   }
 
