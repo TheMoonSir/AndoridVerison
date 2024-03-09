@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@200..800&display=swap");
+@import "../../node_modules/monaco-editor/esm/vs/base/browser/ui/actionbar/actionbar.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    line-height: 1.5;
+    height: 100%;
+  }
+
+  body {
+    background-color: rgb(10, 10, 10);
+    color: white;
+    height: 100%;
+  }
+}
+
+#__next {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Karla", sans-serif;
+  transition: all 0.1s ease;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #686868;
+}
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+
+.items-\[start\] {
+  align-items: start;
+}
+.items-\[end\] {
+  align-items: end;
+}
+.transitionn-\[all_0\.3s_ease_0s\] {
+  transition: all 0.3s ease 0s;
+}
+.bg-state-950\/30 {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.tremor-dialog-root > div:nth-child(1) {
+  background-color: rgba(0, 0, 0, 0.5); /* rgba(0, 0, 0, 50%) */
+}
