@@ -2,13 +2,10 @@ import { Button, TextInput } from "@tremor/react";
 import { FormEventHandler, useState } from "react";
 import { signIn } from "next-auth/react";
 
-export function InputText() {
+export default function InputText() {
   const [userInfo, setUserInfo] = useState({ email: "", username: "" });
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
-    console.log(userInfo.username);
-    console.log(userInfo.email);
 
     const res = await signIn("credentials", {
       username: userInfo.username, // Make sure to use 'username' here

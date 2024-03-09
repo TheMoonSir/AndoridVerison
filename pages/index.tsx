@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { InputText } from "./Components/InputText";
+import InputText from "./Components/InputText";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
