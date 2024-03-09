@@ -15,11 +15,11 @@ const authOptions: NextAuthOptions = {
         username: { label: "username", placeholder: "username" },
       },
       async authorize(credentials, req) {
-        const { username, email } = credentials as {
+        const { username } = credentials as {
           username: string;
         };
 
-        if (email == "" && username == "") {
+        if (username == "") {
           return null;
         }
 
