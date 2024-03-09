@@ -35,11 +35,12 @@ function MonacoComponent() {
     const file = files[0];
     const reader = new FileReader();
     reader.onload = (e) => {
-      const content = e.target.result as string;
+      const content = e.target?.result as string;
       setText(content);
     };
     reader.readAsText(file);
   }
+
   function handleCloneFileClick() {
     if (fileInputRef.current) {
       fileInputRef.current.click();
