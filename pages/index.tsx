@@ -3,7 +3,7 @@ import { InputText } from "./Components/InputText";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-const index = () => {
+const IndexPage = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -33,4 +33,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default IndexPage;
