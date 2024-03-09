@@ -63,7 +63,9 @@ function MonacoComponent() {
     const session = await getSession();
     const user = session?.user;
     axios
-      .post(`/api/v1/Andorid/${user}/SendScript`, { Script: text })
+      .post(`/api/v1/Andorid/${user?.name}/SendScript`, {
+        Script: text,
+      })
       .then((res) => {
         console.log("Executed!");
       })
