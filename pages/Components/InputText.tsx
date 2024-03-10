@@ -1,19 +1,33 @@
 import { Button, TextInput } from "@tremor/react";
 import { FormEventHandler, useState } from "react";
 import { signIn } from "next-auth/react";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function InputText() {
-  const [userInfo, setUserInfo] = useState({ email: "", username: "" });
+  const [userInfo, setUserInfo] = useState({ username: "" });
+  const router = useRouter();
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const res = await signIn("credentials", {
-      username: userInfo.username, // Make sure to use 'username' here
-      email: userInfo.email,
-      redirect: true,
+      username: userInfo.username,
+      redirect: false,
     });
 
+    if (res?.ok === true) {
+      try {
+        await axios.post("/api/v1/CreateAccount", {
+          username: userInfo.username,
+        });
+        router.push('/live/Script')
+      } catch (err) {
+        console.error("Error creating user:", err);
+      }
+    }
   };
+
   return (
     <>
       <div className="mx-auto max-w-sm space-y-8">
