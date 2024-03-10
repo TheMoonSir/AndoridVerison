@@ -16,6 +16,8 @@
     "@remixicon/react": "^4.2.0",
     "@timkendrick/monaco-editor": "^0.0.9",
     "@tremor/react": "^3.14.1",
+    "@vercel/analytics": "^1.2.2",
+    "@vercel/speed-insights": "^1.0.10",
     "@zeit/next-css": "^1.0.1",
     "axios": "^1.6.7",
     "css-loader": "^6.10.0",
