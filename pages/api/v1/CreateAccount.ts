@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 type ResponseData = {
   message?: string;
-  error?: string;
+  error?: string | undefined;
   id?: string;
   name?: string;
 };
@@ -14,7 +14,7 @@ export default async function handler(
   res: NextApiResponse<ResponseData>
 ) {
   if (req.method != "POST") {
-    return res.status(405).json({ error: "Method is not allowed." });
+    return res.status(404).json({ error: "Method is not allowed." });
   }
   const { username } = req.body;
 
@@ -25,8 +25,8 @@ export default async function handler(
       },
     });
     return res.status(201).json(newUser);
-  } catch (error) {
-    console.error("Error creating user:", error);
-    return res.status(500).json({ error: "Internal server error" });
+  } catch (err:any ) {
+    console.error("Error creating user:", err);
+    return res.status(500).json({ error: err || "Unknown error." });
   }
 }
