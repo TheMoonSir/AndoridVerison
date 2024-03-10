@@ -22,7 +22,7 @@ const IndexPage = () => {
             if (err.response.data.error === "you need to login.") {
               await signOut({ callbackUrl: "/" });
             } else {
-              console.log(err);
+              console.error(err);
             }
           });
       }
