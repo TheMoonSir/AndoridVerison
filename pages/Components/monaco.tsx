@@ -77,6 +77,9 @@ function MonacoComponent() {
       .post(`/api/v1/Andorid/${user?.name}/SendScript`, {
         Script: text,
       })
+      .then((res) => {
+        console.log("Executed!");
+      })
       .catch((error) => {
         if (error.response && error.response.data.error === "Unauthorized") {
           router.push("/");
@@ -94,7 +97,7 @@ function MonacoComponent() {
             <div className="flex flex-col gap-[16px] rounded-[8px]">
               <div className="Background flex flex-row gap-[16px] p-[16px_16px_16px] rounded-[8px] shadow-none bg-[#0e0e0e]">
                 <h2 className="flex flex-row place-content-start font-bold text-[24px] pt-[1px]">
-                  {Name}
+                  {}
                 </h2>
                 <div className="flex flex-row ml-auto gap-[15px]">
                   <input
