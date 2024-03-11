@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "vercel-build": "npm install @prisma/extension-accelerate prisma generate --no-engine && next build",
+    "vercel-build": "prisma generate --no-engine && next build",
     "prisma:generate": "prisma generate --no-engine"
   },
   "dependencies": {
