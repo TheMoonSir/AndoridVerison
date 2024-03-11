@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest) {
     const user = param[0];
     const body = await incomingMessage.json();
     const { Script } = body;
-    console.log(Script);
     const User = await prisma.user.findFirst({
       where: {
         name: user,
