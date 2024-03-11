@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 const LiveScriptPage = () => {
   const router = useRouter();
+  const { user } = router.query;
 
   useEffect(() => {
     async function Session() {

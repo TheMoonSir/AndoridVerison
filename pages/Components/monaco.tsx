@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import { Button } from "@tremor/react";
 import { RiPlayFill, RiDeleteBinLine, RiSaveFill } from "react-icons/ri";
@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 function MonacoComponent() {
   const router = useRouter();
   const [Script, setText] = useState("-- some comment");
+  const [Name, setName] = useState<string | undefined>(undefined);
   const editorRef = useRef(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -59,15 +60,23 @@ function MonacoComponent() {
     URL.revokeObjectURL(url);
   }
 
+  useEffect(() => {
+    async function ready() {
+      const session = await getSession();
+      const user = session?.user;
+      setName(user?.name || undefined);
+    }
+    ready();
+  });
+
   async function Send(text: any) {
     const session = await getSession();
     const user = session?.user;
+    setName(user?.name || undefined);
+    console.log(Name);
     axios
       .post(`/api/v1/Andorid/${user?.name}/SendScript`, {
         Script: text,
-      })
-      .then((res) => {
-        console.log("Executed!");
       })
       .catch((error) => {
         if (error.response && error.response.data.error === "Unauthorized") {
@@ -86,7 +95,7 @@ function MonacoComponent() {
             <div className="flex flex-col gap-[16px] rounded-[8px]">
               <div className="Background flex flex-row gap-[16px] p-[16px_16px_16px] rounded-[8px] shadow-none bg-[#0e0e0e]">
                 <h2 className="flex flex-row place-content-start font-bold text-[24px] pt-[1px]">
-                  The Moon
+                  {Name}
                 </h2>
                 <div className="flex flex-row ml-auto gap-[15px]">
                   <input

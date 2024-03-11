@@ -9,6 +9,7 @@ type ResponseData = {
   name?: string;
 };
 
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
@@ -25,7 +26,7 @@ export default async function handler(
       },
     });
     return res.status(201).json(newUser);
-  } catch (err:any ) {
+  } catch (err: any) {
     console.error("Error creating user:", err);
     return res.status(500).json({ error: err || "Unknown error." });
   }

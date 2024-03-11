@@ -1,5 +1,5 @@
 import { Button, TextInput } from "@tremor/react";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useState, ChangeEventHandler } from "react";
 import { signIn } from "next-auth/react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -8,20 +8,26 @@ export default function InputText() {
   const [userInfo, setUserInfo] = useState({ username: "" });
   const router = useRouter();
 
+  const generateRandomString = () => {
+    return Math.random().toString(36).substring(2);
+  };
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
+    let username = userInfo.username;
+    if (username.includes("/") || username.includes("?")) {
+      username = generateRandomString();
+    }
     const res = await signIn("credentials", {
-      username: userInfo.username,
+      username,
       redirect: false,
     });
-
     if (res?.ok === true) {
       try {
         await axios.post("/api/v1/CreateAccount", {
-          username: userInfo.username,
+          username,
         });
-        router.push('/live/Script')
+        router.push("/live/Script");
       } catch (err) {
         console.error("Error creating user:", err);
       }
@@ -43,6 +49,7 @@ export default function InputText() {
               type="text"
               placeholder="Type username"
               className="mb-[16px]"
+              maxLength={16}
             />
           </div>
           <Button type="submit" className="w-full" style={{ color: "white" }}>
