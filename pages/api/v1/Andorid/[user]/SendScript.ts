@@ -36,6 +36,7 @@ export default async function handler(req: NextApiRequest) {
     }, 400);
   } else if (req.method === "GET") {
     let username = req.query?.user;
+    
     if (Array.isArray(username)) {
       username = username[0];
     }

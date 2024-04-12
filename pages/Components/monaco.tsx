@@ -6,11 +6,15 @@ import { AiFillFileAdd } from "react-icons/ai";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { TbPointFilled } from "react-icons/tb";
 
 function MonacoComponent() {
   const router = useRouter();
   const [Script, setText] = useState("-- some comment");
   const [Name, setName] = useState<string | undefined>(undefined);
+  const [UserName, setUserName] = useState<string | undefined>("??????");
+  const [IdUser, setIdUser] = useState<number | undefined>(123456789);
+  const [ImageUser, setImageUser] = useState<string | undefined>("https://t7.rbxcdn.com/3640cc46a068dab879c2883b45d12201");
   const editorRef = useRef(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -73,91 +77,92 @@ function MonacoComponent() {
     const session = await getSession();
     const user = session?.user;
     setName(user?.name || undefined);
-    axios
-      .post(`/api/v1/Andorid/${user?.name}/SendScript`, {
-        Script: text,
-      })
-      .then((res) => {
-        console.log("Executed!");
-      })
-      .catch((error) => {
-        if (error.response && error.response.data.error === "Unauthorized") {
-          router.push("/");
-        } else {
-          console.error("Error:", error.data);
-        }
-      });
+    if (user && user.name) {
+      axios
+        .post(`/api/v1/Andorid/${user.name}/SendScript`, {
+          Script: text,
+        })
+        .then((res) => {
+          console.log("Executed!");
+        })
+        .catch((error) => {
+          if (error.response && (error.response.data.error === "Unauthorized" || error.response.status === 401)) {
+            router.replace("/");
+          } else {
+            console.error("Error:", error);
+          }
+        });
+    } else {
+      console.error("User or user name is undefined");
+      router.replace("/");
+    }
   }
 
   return (
-    <div>
-      <div className="relative flex p-[16px_0px_16px_16px]">
-        <div className="h-[calc(100%+90px)] flex flex-col w-[100%] items-center m-[210px_auto] p-[0px_16px_16px] overflow-visible">
-          <div className="relative grid grid-cols-[1fr_auto] w-[50%] gap-[16px] p-[0px_0px]">
-            <div className="flex flex-col gap-[16px] rounded-[8px]">
-              <div className="Background flex flex-row gap-[16px] p-[16px_16px_16px] rounded-[8px] shadow-none bg-[#0e0e0e]">
-                <h2 className="flex flex-row place-content-start font-bold text-[24px] pt-[1px]">
-                  {}
-                </h2>
-                <div className="flex flex-row ml-auto gap-[15px]">
-                  <input
-                    type="file"
-                    onChange={handleFileUpload}
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                  />
-                  <Button
-                    variant="secondary"
-                    color="zinc"
-                    icon={RiSaveFill}
-                    onClick={handleSaveFileClick}
-                  >
-                    Save file
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    color="zinc"
-                    icon={AiFillFileAdd}
-                    onClick={handleCloneFileClick}
-                  >
-                    Clone file
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    color="zinc"
-                    icon={RiDeleteBinLine}
-                    onClick={clean}
-                  >
-                    Clear
-                  </Button>
-                  <Button
-                    className="flex"
-                    variant="secondary"
-                    color="zinc"
-                    icon={RiPlayFill}
-                    onClick={() => Send(Script)}
-                  >
-                    Execute
-                  </Button>
-                </div>
-              </div>
-              <div className="Background flex flex-col p-[24px_16px_16px] rounded-[8px] shadow-none bg-[#0e0e0e]">
-                <Editor
-                  height="500px"
-                  width="100%"
-                  defaultLanguage="lua"
-                  defaultValue="-- some comment"
-                  onChange={handleEditorChange}
-                  onMount={handleEditorDidMount}
-                  theme="vs-dark"
-                  value={Script}
+    <main id="container">
+      <div className="m-auto max-w-[1200px]">
+        <div className="m-[250px_auto]">
+          <div className="bg-[#070707] w-full p-[12px] border-[0.1px] border-yellow-700 rounded-lg mb-[25px]">
+            <div className="Options grid grid-cols-10 items-center pb-[20px] justify-between">
+              <h2 className="ml-[10px]">{Name}</h2>
+              <div className="flex justify-end space-x-2 col-span-9">
+                <Button
+                  variant="secondary"
+                  color="orange"
+                  icon={RiSaveFill}
+                  onClick={handleSaveFileClick}
+                >
+                  Save file
+                </Button>
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  style={{ display: "none" }}
+                  ref={fileInputRef}
                 />
+                <Button
+                  variant="secondary"
+                  color="orange"
+                  icon={AiFillFileAdd}
+                  onClick={handleCloneFileClick}
+                >
+                  Clone file
+                </Button>
+                <Button
+                  variant="secondary"
+                  color="orange"
+                  icon={RiDeleteBinLine}
+                  onClick={clean}
+                >
+                  Clear
+                </Button>
+                <Button
+                  className="flex"
+                  variant="secondary"
+                  color="orange"
+                  icon={RiPlayFill}
+                  onClick={() => Send(Script)}
+                >
+                  Execute
+                </Button>
               </div>
+            </div>
+            <div className="Editor">
+              <Editor
+                height="500px"
+                width="100%"
+                defaultLanguage="lua"
+                defaultValue="-- some comment"
+                onChange={handleEditorChange}
+                onMount={handleEditorDidMount}
+                theme="vs-dark"
+                value={Script}
+              />
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 

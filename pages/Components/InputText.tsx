@@ -52,7 +52,7 @@ export default function InputText() {
               maxLength={16}
             />
           </div>
-          <Button type="submit" className="w-full" style={{ color: "white" }}>
+          <Button type="submit" variant="secondary" className="w-full" style={{ color: "white" }}>
             Submit
           </Button>
         </form>
