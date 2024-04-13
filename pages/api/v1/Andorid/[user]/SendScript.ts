@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       clearTimeout(scriptTimeout);
     }
     if (!scriptTimeout) {
-      scriptTimeout = setTimeout(clearScriptData, 200);
+      scriptTimeout = setTimeout(clearScriptData, 1000);
     }
   } else if (req.method === "GET") {
     let username = req.query?.user;
