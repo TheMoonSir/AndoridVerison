@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest) {
     if (scriptTimeout) {
       clearTimeout(scriptTimeout);
     }
-    scriptTimeout = setTimeout(clearScriptData, 100);
+    scriptTimeout = setTimeout(clearScriptData, 50);
   } else if (req.method === "GET") {
     let username = req.query?.user;
 
@@ -54,14 +54,7 @@ export default async function handler(req: NextApiRequest) {
       if (scriptData) {
         return new Response(scriptData, { status: 200 });
       } else {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        if (scriptData) {
-          return new Response(scriptData, { status: 200 });
-        } else {
-          return new Response(JSON.stringify({ error: "Script not found." }), {
-            status: 200,
-          });
-        }
+        return new Response(JSON.stringify({ error: "Script not found." }))
       }
     } else {
       return Response.json({ error: "you need to login." }, { status: 401 });
