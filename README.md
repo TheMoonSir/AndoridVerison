@@ -73,7 +73,7 @@ if __ExecuterName == 'Codex' then
         while true do
             task.wait(0.2)
             if game:HttpGet(url) ~= '{"error":"Script not found."}' then
-                print(game:HttpGet(url))
+                print(game:HttpGet(url)) -- change to loadstring(game:HttpGet(url))
             end
         end
     else
