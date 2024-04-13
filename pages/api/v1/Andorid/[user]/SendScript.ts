@@ -12,13 +12,8 @@ async function clearScriptData() {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
-    const parsedUrl = new URL(req.url || "");
-    const pathParts = parsedUrl.pathname.split("/");
-    const param = pathParts.slice(4, 10);
-    const incomingMessage = req as any;
-    const user = param[0];
-    const body = await incomingMessage.json();
-    const { Script } = body;
+    const user = req.query.user as string;
+    const { Script } = req.body;
     const User = await prisma.user.findFirst({
       where: {
         name: user,

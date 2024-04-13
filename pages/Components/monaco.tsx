@@ -76,7 +76,7 @@ function MonacoComponent() {
     setName(user?.name || undefined);
     if (user && user.name) {
       axios
-        .post(`/api/v1/Andorid/${user.name}/SendScript`, {
+        .post(`/api/v1/Andorid/${user?.name}/SendScript`, {
           Script: text,
         })
         .then((res) => {
