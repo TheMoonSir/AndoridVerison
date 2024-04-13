@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest) {
     setTimeout(() => {
       scriptData = null;
       console.log("Script data cleared.");
-    }, 200);
+    }, 100);
   } else if (req.method === "GET") {
     let username = req.query?.user;
     
