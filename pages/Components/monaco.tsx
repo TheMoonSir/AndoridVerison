@@ -12,9 +12,6 @@ function MonacoComponent() {
   const router = useRouter();
   const [Script, setText] = useState("-- some comment");
   const [Name, setName] = useState<string | undefined>(undefined);
-  const [UserName, setUserName] = useState<string | undefined>("??????");
-  const [IdUser, setIdUser] = useState<number | undefined>(123456789);
-  const [ImageUser, setImageUser] = useState<string | undefined>("https://t7.rbxcdn.com/3640cc46a068dab879c2883b45d12201");
   const editorRef = useRef(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

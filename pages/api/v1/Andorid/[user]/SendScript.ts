@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest) {
     setTimeout(() => {
       scriptData = null;
       console.log("Script data cleared.");
-    }, 400);
+    }, 200);
   } else if (req.method === "GET") {
     let username = req.query?.user;
     
@@ -47,7 +47,7 @@ export default async function handler(req: NextApiRequest) {
     });
     if (user) {
       if (scriptData) {
-        new Response(scriptData, { status: 200 });
+        return new Response(scriptData, { status: 200 });
       } else {
         return Response.json({ error: "Script not found." }, { status: 200 });
       }
