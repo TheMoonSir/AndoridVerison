@@ -1,20 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client/edge";
+
 export const config = {
   runtime: "edge",
 };
 
 const prisma = new PrismaClient();
 
-let scriptData: any = null;
-let scriptTimeout: NodeJS.Timeout | null = null;
-
-function clearScriptData() {
-  scriptData = null;
-  console.log("Script data cleared.");
-}
-
 export default async function handler(req: NextApiRequest) {
+  let scriptData: any = null;
+  let scriptTimeout: NodeJS.Timeout | null = null;
+  function clearScriptData() {
+    scriptData = null;
+    console.log("Script data cleared.");
+  }
   if (req.method === "POST") {
     const parsedUrl = new URL(req.url || "");
     const pathParts = parsedUrl.pathname.split("/");
@@ -35,9 +34,13 @@ export default async function handler(req: NextApiRequest) {
       return Response.json({ error: "Invalid." }, { status: 400 });
     }
     scriptData = Script;
+    if (scriptTimeout) {
+      clearTimeout(scriptTimeout);
+    }
+    scriptTimeout = setTimeout(clearScriptData, 100);
   } else if (req.method === "GET") {
     let username = req.query?.user;
-    
+
     if (Array.isArray(username)) {
       username = username[0];
     }
@@ -48,17 +51,15 @@ export default async function handler(req: NextApiRequest) {
     });
     if (user) {
       if (scriptData) {
-        if (scriptTimeout) {
-          clearTimeout(scriptTimeout);
-        }
-        scriptTimeout = setTimeout(clearScriptData, 100);
         return new Response(scriptData, { status: 200 });
       } else {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         if (scriptData) {
           return new Response(scriptData, { status: 200 });
         } else {
-          return new Response(JSON.stringify({ error: "Script not found." }), { status: 404 });
+          return new Response(JSON.stringify({ error: "Script not found." }), {
+            status: 404,
+          });
         }
       }
     } else {
