@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!scriptTimeout) {
       scriptTimeout = setTimeout(clearScriptData, 1000);
     }
-    return res.status(200).json({ data: 'Script data cleared :)'})
+    res.status(200).json({ message: "Script received successfully." });
   } else if (req.method === "GET") {
     let username = req.query?.user;
 
