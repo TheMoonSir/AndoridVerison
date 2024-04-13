@@ -6,14 +6,15 @@ export const config = {
 };
 
 const prisma = new PrismaClient();
+let scriptData: "";
+let scriptTimeout: NodeJS.Timeout | null = null;
+
+function clearScriptData() {
+  scriptData = "";
+  console.log("Script data cleared.");
+}
 
 export default async function handler(req: NextApiRequest) {
-  let scriptData: any = null;
-  let scriptTimeout: NodeJS.Timeout | null = null;
-  function clearScriptData() {
-    scriptData = null;
-    console.log("Script data cleared.");
-  }
   if (req.method === "POST") {
     const parsedUrl = new URL(req.url || "");
     const pathParts = parsedUrl.pathname.split("/");
