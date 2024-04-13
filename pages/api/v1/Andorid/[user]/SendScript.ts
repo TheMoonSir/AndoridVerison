@@ -5,10 +5,12 @@ const prisma = new PrismaClient();
 let scriptData: any = null;
 let scriptTimeout: NodeJS.Timeout | null = null;
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+ function clearScriptData() {
+  scriptData = null;
+  console.log("Script data cleared.");
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const user = req.query.user as string;
     const { Script } = req.body;
@@ -24,11 +26,13 @@ export default async function handler(
       return res.status(400).json({ error: "Invalid." });
     }
     scriptData = Script;
-
-    scriptTimeout = setTimeout(() => {
-      scriptData = null;
-      console.log("Script data cleared.");
-    }, 1000);
+    if (scriptTimeout) {
+      clearTimeout(scriptTimeout);
+    }
+    if (!scriptTimeout) {
+      scriptTimeout = setTimeout(clearScriptData, 1000);
+    }
+    return res.status(200).json({ data: 'Script data cleared :)'})
   } else if (req.method === "GET") {
     let username = req.query?.user;
 
