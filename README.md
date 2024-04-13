@@ -15,7 +15,7 @@ getgenv()._Information_ = {
 }
 
 local __ExecuterName = identifyexecutor()
-local url = 'https://andorid.xzendevx.xyz/api/v1/Andorid/'..getgenv()._Information_['_HostNameUser_']..'/SendScript'
+local url = '{server link}'..getgenv()._Information_['_HostNameUser_']..'/SendScript'
 
 
 if __ExecuterName == 'Codex' then
