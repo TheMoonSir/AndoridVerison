@@ -1,10 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client/edge";
 
-export const config = {
-  runtime: "edge",
-};
-
 const prisma = new PrismaClient();
 let scriptData: "";
 let scriptTimeout: NodeJS.Timeout | null = null;
@@ -14,7 +10,7 @@ async function clearScriptData() {
   console.log("Script data cleared.");
 }
 
-export default async function handler(req: NextApiRequest) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const parsedUrl = new URL(req.url || "");
     const pathParts = parsedUrl.pathname.split("/");
@@ -29,10 +25,10 @@ export default async function handler(req: NextApiRequest) {
       },
     });
     if (!User) {
-      return Response.json({ error: "Unauthorized." }, { status: 401 });
+      return res.status(401).json({ error: "Unauthorized." });
     }
     if (!Script && !user) {
-      return Response.json({ error: "Invalid." }, { status: 400 });
+      return res.status(400).json({ error: "Invalid." });
     }
     scriptData = Script;
     if (scriptTimeout) {
@@ -54,14 +50,14 @@ export default async function handler(req: NextApiRequest) {
     });
     if (user) {
       if (scriptData) {
-        return new Response(scriptData, { status: 200 });
+        return res.status(200).send(scriptData);
       } else {
-        return new Response(JSON.stringify({ error: "Script not found." }));
+        return res.send(JSON.stringify({ error: "Script not found." }));
       }
     } else {
-      return Response.json({ error: "you need to login." }, { status: 401 });
+      return res.status(404).json({ error: "you need to login." });
     }
   } else {
-    return Response.json({ error: "Method Not Allowed" }, { status: 405 });
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 }
