@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       clearTimeout(scriptTimeout);
     }
     if (!scriptTimeout) {
-      scriptTimeout = setTimeout(clearScriptData, 300);
+      scriptTimeout = setTimeout(clearScriptData, 1000);
     }
     return res.status(200).json({ data: 'Script data cleared :)'})
   } else if (req.method === "GET") {
