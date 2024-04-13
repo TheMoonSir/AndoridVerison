@@ -58,7 +58,7 @@ export default async function handler(req: NextApiRequest) {
           return new Response(scriptData, { status: 200 });
         } else {
           return new Response(JSON.stringify({ error: "Script not found." }), {
-            status: 404,
+            status: 200,
           });
         }
       }
