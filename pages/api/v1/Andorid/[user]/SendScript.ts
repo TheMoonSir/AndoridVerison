@@ -35,11 +35,6 @@ export default async function handler(req: NextApiRequest) {
       return Response.json({ error: "Invalid." }, { status: 400 });
     }
     scriptData = Script;
-    if (scriptTimeout) {
-      clearTimeout(scriptTimeout);
-    }
-    scriptTimeout = setTimeout(clearScriptData, 200);
-    return new Response(JSON.stringify({ message: "Script received successfully." }), { status: 200 });
   } else if (req.method === "GET") {
     let username = req.query?.user;
     
@@ -53,6 +48,10 @@ export default async function handler(req: NextApiRequest) {
     });
     if (user) {
       if (scriptData) {
+        if (scriptTimeout) {
+          clearTimeout(scriptTimeout);
+        }
+        scriptTimeout = setTimeout(clearScriptData, 100);
         return new Response(scriptData, { status: 200 });
       } else {
         await new Promise(resolve => setTimeout(resolve, 100));
