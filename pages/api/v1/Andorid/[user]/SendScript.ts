@@ -7,6 +7,8 @@ export const config = {
 const prisma = new PrismaClient();
 
 let scriptData: any = null;
+let scriptTimeout: NodeJS.Timeout | null = null;
+
 export default async function handler(req: NextApiRequest) {
   if (req.method === "POST") {
     const parsedUrl = new URL(req.url || "");
@@ -30,10 +32,14 @@ export default async function handler(req: NextApiRequest) {
     scriptData = Script;
     Response.json({ error: "Script received successfully." }, { status: 200 });
 
-    setTimeout(() => {
+    if (scriptTimeout) {
+      clearTimeout(scriptTimeout);
+    }
+
+    scriptTimeout = setTimeout(() => {
       scriptData = null;
       console.log("Script data cleared.");
-    }, 100);
+    }, 200);
   } else if (req.method === "GET") {
     let username = req.query?.user;
     
