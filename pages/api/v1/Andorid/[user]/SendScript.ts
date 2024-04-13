@@ -9,6 +9,11 @@ const prisma = new PrismaClient();
 let scriptData: any = null;
 let scriptTimeout: NodeJS.Timeout | null = null;
 
+function clearScriptData() {
+  scriptData = null;
+  console.log("Script data cleared.");
+}
+
 export default async function handler(req: NextApiRequest) {
   if (req.method === "POST") {
     const parsedUrl = new URL(req.url || "");
@@ -30,16 +35,11 @@ export default async function handler(req: NextApiRequest) {
       return Response.json({ error: "Invalid." }, { status: 400 });
     }
     scriptData = Script;
-    Response.json({ error: "Script received successfully." }, { status: 200 });
-
     if (scriptTimeout) {
       clearTimeout(scriptTimeout);
     }
-
-    scriptTimeout = setTimeout(() => {
-      scriptData = null;
-      console.log("Script data cleared.");
-    }, 200);
+    scriptTimeout = setTimeout(clearScriptData, 200);
+    return new Response(JSON.stringify({ message: "Script received successfully." }), { status: 200 });
   } else if (req.method === "GET") {
     let username = req.query?.user;
     
@@ -55,7 +55,12 @@ export default async function handler(req: NextApiRequest) {
       if (scriptData) {
         return new Response(scriptData, { status: 200 });
       } else {
-        return Response.json({ error: "Script not found." }, { status: 200 });
+        await new Promise(resolve => setTimeout(resolve, 100));
+        if (scriptData) {
+          return new Response(scriptData, { status: 200 });
+        } else {
+          return new Response(JSON.stringify({ error: "Script not found." }), { status: 404 });
+        }
       }
     } else {
       return Response.json({ error: "you need to login." }, { status: 401 });
