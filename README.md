@@ -1,7 +1,26 @@
 <h2>For use this, download node.js and do Npm install</h2>
-<p>When the install end, then do npm run dev.</p>
 
-<h1>Just saying that builded by Nextjs. don't change if you dont know. and if you have issue so mhm</h1>
+For use database prisma 
+**Go to ".env"**
+Now you can to see:
+```
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=UseYourApiKey"
+DIRECT_DATABASE_URL="mongodb+srv:/YK/data/Andorid"
+```
+Then go to https://console.prisma.io/login?utm_source=website&utm_medium=accelerate-page
+And click on Contiune with GitHub
+And when you creating account click on "New project" and choose name you want
+When that created , Click on "Enable Accelerate" Now that asking you to write your Database.
+Then use Mongdb `mongodb+srv://<Username>:<Password>@blahblah/andorid` when you done click "Enable Accelerate" , and when that finally done. go to API Keys
+And Click "Create API key" and choose name and create. and the thing will say what is your api key.
+**Warn: you need to save your key api or you won't get the key again.**
+
+Now go back to .env and do:
+ ```
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=ApiKey"
+DIRECT_DATABASE_URL="mongodb+srv://<Username>:<Password>@blahblah/andorid"
+```
+
 btw full code on LUA:
 
 ```lua
